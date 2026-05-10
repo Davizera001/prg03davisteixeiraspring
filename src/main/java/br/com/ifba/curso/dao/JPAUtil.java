@@ -16,6 +16,7 @@ public class JPAUtil {
      private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("prg03PU"); // cria a fábrica usando o persistence.xml
 
     public static EntityManager getEntityManager() { // método que retorna um EntityManager
+        
         return emf.createEntityManager(); // cria e retorna um novo EntityManager
     }
     

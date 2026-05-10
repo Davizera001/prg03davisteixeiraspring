@@ -13,11 +13,12 @@ public class CursoDAO { // classe responsável pelas operações no banco
     public java.util.List<br.com.ifba.curso.entity.Curso> buscarPorNome(String nome) { // método que busca cursos pelo nome
 
     jakarta.persistence.EntityManager em = JPAUtil.getEntityManager(); // cria conexão com banco
-
+    
     java.util.List<br.com.ifba.curso.entity.Curso> lista = em.createQuery( // cria consulta JPQL
             "from Curso c where lower(c.nome) like :nome", // consulta filtrando pelo nome
             br.com.ifba.curso.entity.Curso.class // define o tipo de retorno
     )
+            
     .setParameter("nome", "%" + nome.toLowerCase() + "%") // define o parâmetro com LIKE
     .getResultList(); // executa a consulta
 
