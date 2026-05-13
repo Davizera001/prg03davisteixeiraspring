@@ -4,91 +4,78 @@
  */
 package br.com.ifba.curso.dao;
 
-import br.com.ifba.curso.entity.Curso; // importa a classe Curso
-import jakarta.persistence.EntityManager; // importa o gerenciador
-import java.util.List; // importa lista
+import br.com.ifba.curso.dao.generic.GenericDAO; // importa o DAO genérico
 
-public class CursoDAO { // classe responsável pelas operações no banco
-    
-    public java.util.List<br.com.ifba.curso.entity.Curso> buscarPorNome(String nome) { // método que busca cursos pelo nome
+import br.com.ifba.curso.entity.Curso; // importa a entidade Curso
 
-    jakarta.persistence.EntityManager em = JPAUtil.getEntityManager(); // cria conexão com banco
-    
-    java.util.List<br.com.ifba.curso.entity.Curso> lista = em.createQuery( // cria consulta JPQL
-            "from Curso c where lower(c.nome) like :nome", // consulta filtrando pelo nome
-            br.com.ifba.curso.entity.Curso.class // define o tipo de retorno
-    )
-            
-    .setParameter("nome", "%" + nome.toLowerCase() + "%") // define o parâmetro com LIKE
-    .getResultList(); // executa a consulta
+import java.util.List; // importa listas
 
-    em.close(); // fecha conexão
+public class CursoDAO extends GenericDAO<Curso> { // CursoDAO herda operações genéricas de Curso
 
-    return lista; // retorna lista filtrada
-}
+    public CursoDAO() { // construtor do CursoDAO
 
-    public void salvar(Curso curso) { // método para salvar curso
+        super(Curso.class); // informa ao GenericDAO que essa classe trabalha com Curso
 
-        EntityManager em = JPAUtil.getEntityManager();
+    } // fim do construtor
 
-    try {
+    public void salvar(Curso curso) { // método usado para salvar ou atualizar curso
 
-        em.getTransaction().begin();
+        if (curso.getId() == null) { // verifica se o curso ainda não tem ID
 
-        if (curso.getId() == null) { // novo
-            em.persist(curso);
-        } else { // edição
-            em.merge(curso);
-        }
+            super.salvar(curso); // salva um novo curso no banco
 
-        em.getTransaction().commit();
+        } else { // caso o curso já tenha ID
 
-    } catch (Exception e) {
+            super.atualizar(curso); // atualiza o curso existente no banco
 
-        em.getTransaction().rollback();
-        e.printStackTrace();
+        } // fim do if/else
 
-    } finally {
+    } // fim do método salvar
 
-        em.close();
-    }
-    }
+    public List<Curso> listar() { // método usado pela tela para listar cursos
 
-    public List<Curso> listar() { // método para listar cursos
+        return super.listarTodos(); // chama o método genérico que lista todos
 
-        EntityManager em = JPAUtil.getEntityManager(); // cria conexão
+    } // fim do método listar
 
-        List<Curso> lista = em.createQuery("from Curso", Curso.class).getResultList(); // consulta todos cursos
+    public void remover(Long id) { // método usado pela tela para remover curso por ID
 
-        em.close(); // fecha conexão
+        Curso curso = super.buscarPorId(id); // busca o curso pelo ID
 
-        return lista; // retorna lista
-    }
+        if (curso != null) { // verifica se encontrou o curso
 
-    public void remover(Long id) { // método para remover curso
+            super.deletar(curso); // remove o curso do banco
 
-        EntityManager em = JPAUtil.getEntityManager(); // cria conexão
+        } // fim do if
 
-        try { // tenta executar
+    } // fim do método remover
 
-            Curso curso = em.find(Curso.class, id); // busca curso pelo id
+    public Curso buscarPorId(Long id) { // método usado para buscar curso pelo ID
 
-            em.getTransaction().begin(); // inicia transação
+        return super.buscarPorId(id); // chama a busca genérica por ID
 
-            em.remove(curso); // remove do banco
+    } // fim do método buscarPorId
 
-            em.getTransaction().commit(); // confirma
+    public List<Curso> buscarPorNome(String nome) { // método específico para buscar curso pelo nome
 
-        } catch (Exception e) { // erro
+        jakarta.persistence.EntityManager em = JPAUtil.getEntityManager(); // cria EntityManager
 
-            em.getTransaction().rollback(); // desfaz
+        try { // inicia tentativa
 
-            e.printStackTrace(); // mostra erro
+            return em.createQuery( // cria consulta JPQL
+                    "from Curso c where lower(c.nome) like :nome", // consulta pelo nome
+                    Curso.class // define retorno como Curso
+            ).setParameter( // define parâmetro da consulta
+                    "nome", // nome do parâmetro
+                    "%" + nome.toLowerCase() + "%" // valor pesquisado
+            ).getResultList(); // executa consulta e retorna lista
 
-        } finally {
+        } finally { // sempre executa
 
-            em.close(); // fecha conexão
+            em.close(); // fecha EntityManager
 
-        }
-    }
-}
+        } // fim do finally
+
+    } // fim do método buscarPorNome
+
+} // fim da classe

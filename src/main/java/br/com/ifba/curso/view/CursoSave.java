@@ -135,7 +135,19 @@ public CursoSave(br.com.ifba.curso.entity.Curso curso) { // construtor com curso
         String descricao = txtDescricao.getText(); // obtém o texto da descrição
         int carga = Integer.parseInt(txtCargaHoraria.getText()); // converte o texto da carga horária para inteiro
 
-        br.com.ifba.curso.dao.CursoDAO dao = new br.com.ifba.curso.dao.CursoDAO(); // cria objeto DAO
+        br.com.ifba.curso.controller.CursoController controller = new br.com.ifba.curso.controller.CursoController(); // cria a controller de curso
+
+if (curso == null) { // verifica se é um novo cadastro
+
+    curso = new br.com.ifba.curso.entity.Curso(); // cria novo objeto curso
+
+} // fim do if
+
+    curso.setNome(nome); // define o nome do curso
+    curso.setDescricao(descricao); // define a descrição do curso
+    curso.setCargaHoraria(carga); // define a carga horária do curso
+
+    controller.salvar(curso); // salva ou atualiza usando a controller
 
         if (curso == null) { // verifica se é um novo cadastro
 
@@ -147,7 +159,6 @@ public CursoSave(br.com.ifba.curso.entity.Curso curso) { // construtor com curso
         curso.setDescricao(descricao); // define a descrição
         curso.setCargaHoraria(carga); // define a carga horária
 
-        dao.salvar(curso); // salva ou atualiza o curso no banco
 
         javax.swing.JOptionPane.showMessageDialog(this, "Salvo com sucesso!"); // mostra mensagem de sucesso
 

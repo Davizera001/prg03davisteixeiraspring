@@ -16,7 +16,7 @@ public class CursoListar extends javax.swing.JFrame {
 
     modelo.setRowCount(0); // limpa tabela
 
-    java.util.List<br.com.ifba.curso.entity.Curso> lista = new br.com.ifba.curso.dao.CursoDAO().buscarPorNome(texto); // busca filtrada
+    java.util.List<br.com.ifba.curso.entity.Curso> lista = new br.com.ifba.curso.controller.CursoController().buscarPorNome(texto); // busca filtrada
 
     for (br.com.ifba.curso.entity.Curso c : lista) { // percorre resultados
 
@@ -35,7 +35,7 @@ public class CursoListar extends javax.swing.JFrame {
 
     modelo.setRowCount(0); // limpa tabela
 
-    java.util.List<br.com.ifba.curso.entity.Curso> lista = new br.com.ifba.curso.dao.CursoDAO().listar(); // busca do banco
+    java.util.List<br.com.ifba.curso.entity.Curso> lista = new br.com.ifba.curso.controller.CursoController().listar(); // busca cursos pela controller
 
     for (br.com.ifba.curso.entity.Curso c : lista) { // percorre lista
 
@@ -217,7 +217,7 @@ public class CursoListar extends javax.swing.JFrame {
 
             Long id = Long.parseLong(tblCursos.getValueAt(linha, 0).toString()); // obtém o ID
 
-            new br.com.ifba.curso.dao.CursoDAO().remover(id); // remove o curso do banco
+            new br.com.ifba.curso.controller.CursoController().remover(id);  // remove curso pela controller
 
             carregarTabela(); // atualiza a tabela
 
@@ -252,7 +252,7 @@ public class CursoListar extends javax.swing.JFrame {
 
         br.com.ifba.curso.entity.Curso curso = null; // cria variável para armazenar o curso
 
-        for (br.com.ifba.curso.entity.Curso c : new br.com.ifba.curso.dao.CursoDAO().listar()) { // percorre todos os cursos do banco
+        for (br.com.ifba.curso.entity.Curso c : new br.com.ifba.curso.controller.CursoController().listar()) { // busca cursos pela controller
             if (c.getId().equals(id)) { // verifica se o ID corresponde
                 curso = c; // armazena o curso encontrado
                 break; // sai do loop
