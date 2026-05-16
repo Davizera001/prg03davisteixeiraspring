@@ -3,9 +3,7 @@ br\com\ifba\curso\service\CursoService.class
 br\com\ifba\curso\view\CursoListar.class
 br\com\ifba\curso\view\CursoListar$1.class
 br\com\ifba\curso\view\CursoSave.class
-br\com\ifba\curso\dao\JPAUtil.class
 br\com\ifba\curso\controller\CursoController.class
 br\com\ifba\curso\entity\Curso.class
-br\com\ifba\curso\dao\generic\GenericDAO.class
-br\com\ifba\curso\dao\generic\GenericIDAO.class
-br\com\ifba\curso\dao\CursoDAO.class
+br\com\ifba\Prg03persistenciaApplication.class
+br\com\ifba\curso\repository\CursoRepository.class

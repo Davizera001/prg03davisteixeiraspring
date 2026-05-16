@@ -10,27 +10,38 @@ package br.com.ifba.curso.view;
  */
 public class CursoSave extends javax.swing.JFrame {
     
-private br.com.ifba.curso.entity.Curso curso; // variável para guardar o curso
+    private br.com.ifba.curso.controller.CursoController cursoController; // controller gerenciado pelo Spring
+    
+    private br.com.ifba.curso.entity.Curso curso; // variável para guardar o curso
 
-public CursoSave(br.com.ifba.curso.entity.Curso curso) { // construtor com curso
+            public CursoSave(br.com.ifba.curso.entity.Curso curso) { // construtor usado para edição
 
-    initComponents(); // inicializa tela
+    initComponents(); // inicializa os componentes da tela
+
+    cursoController = br.com.ifba.Prg03persistenciaApplication.contexto.getBean(br.com.ifba.curso.controller.CursoController.class); // pega o controller do Spring
 
     this.curso = curso; // guarda o curso recebido
 
-    txtNome.setText(curso.getNome()); // preenche nome
-    txtDescricao.setText(curso.getDescricao()); // preenche descrição
-    txtCargaHoraria.setText(String.valueOf(curso.getCargaHoraria())); // preenche carga
-}
+    txtNome.setText(curso.getNome()); // preenche o campo nome
+
+    txtDescricao.setText(curso.getDescricao()); // preenche o campo descrição
+
+    txtCargaHoraria.setText(String.valueOf(curso.getCargaHoraria())); // preenche o campo carga horária
+
+            } // fim do construtor
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CursoSave.class.getName());
 
     /**
      * Creates new form CursoSave
      */
-    public CursoSave() {
-        initComponents();
-    }
+    public CursoSave() { // construtor padrão
+
+    initComponents(); // inicializa os componentes da tela
+
+    cursoController = br.com.ifba.Prg03persistenciaApplication.contexto.getBean(br.com.ifba.curso.controller.CursoController.class); // pega o controller do Spring
+
+} // fim do construtor
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -129,46 +140,48 @@ public CursoSave(br.com.ifba.curso.entity.Curso curso) { // construtor com curso
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
     
-           try { // inicia bloco de tentativa
+           try { // inicia o bloco de tentativa
 
-        String nome = txtNome.getText(); // obtém o texto do campo nome
-        String descricao = txtDescricao.getText(); // obtém o texto da descrição
-        int carga = Integer.parseInt(txtCargaHoraria.getText()); // converte o texto da carga horária para inteiro
+        String nome = txtNome.getText(); // obtém o texto digitado no campo nome
 
-        br.com.ifba.curso.controller.CursoController controller = new br.com.ifba.curso.controller.CursoController(); // cria a controller de curso
+        String descricao = txtDescricao.getText(); // obtém o texto digitado no campo descrição
 
-if (curso == null) { // verifica se é um novo cadastro
-
-    curso = new br.com.ifba.curso.entity.Curso(); // cria novo objeto curso
-
-} // fim do if
-
-    curso.setNome(nome); // define o nome do curso
-    curso.setDescricao(descricao); // define a descrição do curso
-    curso.setCargaHoraria(carga); // define a carga horária do curso
-
-    controller.salvar(curso); // salva ou atualiza usando a controller
+        int carga = Integer.parseInt(txtCargaHoraria.getText()); // converte a carga horária para inteiro
 
         if (curso == null) { // verifica se é um novo cadastro
 
-            curso = new br.com.ifba.curso.entity.Curso(); // cria novo objeto curso
+            curso = new br.com.ifba.curso.entity.Curso(); // cria um novo objeto Curso
 
         } // fim do if
 
         curso.setNome(nome); // define o nome do curso
-        curso.setDescricao(descricao); // define a descrição
-        curso.setCargaHoraria(carga); // define a carga horária
 
+        curso.setDescricao(descricao); // define a descrição do curso
 
-        javax.swing.JOptionPane.showMessageDialog(this, "Salvo com sucesso!"); // mostra mensagem de sucesso
+        curso.setCargaHoraria(carga); // define a carga horária do curso
 
-        this.dispose(); // fecha a tela
+        cursoController.salvar(curso); // salva ou atualiza o curso usando a controller do Spring
 
-    } catch (Exception e) { // captura possíveis erros
+        javax.swing.JOptionPane.showMessageDialog( // exibe mensagem para o usuário
+                this, // usa a tela atual como referência
+                "Salvo com sucesso!", // mensagem exibida
+                "Sucesso", // título da janela
+                javax.swing.JOptionPane.INFORMATION_MESSAGE // tipo da mensagem
+        ); // fim da mensagem
 
-        javax.swing.JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage()); // mostra mensagem de erro
+        this.dispose(); // fecha a tela após salvar
 
-    } // fim do catch  
+    } catch (Exception e) { // captura qualquer erro que acontecer
+
+        javax.swing.JOptionPane.showMessageDialog( // exibe mensagem de erro
+                this, // usa a tela atual como referência
+                "Erro: " + e.getMessage(), // mostra a mensagem do erro
+                "Erro", // título da janela
+                javax.swing.JOptionPane.ERROR_MESSAGE // tipo da mensagem
+        ); // fim da mensagem de erro
+
+    } // fim do catch
+
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**

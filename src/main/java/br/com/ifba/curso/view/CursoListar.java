@@ -10,13 +10,15 @@ package br.com.ifba.curso.view;
  */
 public class CursoListar extends javax.swing.JFrame {
     
+    private br.com.ifba.curso.controller.CursoController cursoController; // controller gerenciado pelo Spring
+    
     private void carregarTabelaFiltro(String texto) { // método para carregar tabela com filtro
 
     javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tblCursos.getModel(); // pega modelo
 
     modelo.setRowCount(0); // limpa tabela
 
-    java.util.List<br.com.ifba.curso.entity.Curso> lista = new br.com.ifba.curso.controller.CursoController().buscarPorNome(texto); // busca filtrada
+    java.util.List<br.com.ifba.curso.entity.Curso> lista = cursoController.buscarPorNome(texto); // busca filtrada
 
     for (br.com.ifba.curso.entity.Curso c : lista) { // percorre resultados
 
@@ -35,7 +37,7 @@ public class CursoListar extends javax.swing.JFrame {
 
     modelo.setRowCount(0); // limpa tabela
 
-    java.util.List<br.com.ifba.curso.entity.Curso> lista = new br.com.ifba.curso.controller.CursoController().listar(); // busca cursos pela controller
+    java.util.List<br.com.ifba.curso.entity.Curso> lista = cursoController.listar(); // busca cursos pela controller
 
     for (br.com.ifba.curso.entity.Curso c : lista) { // percorre lista
 
@@ -53,10 +55,15 @@ public class CursoListar extends javax.swing.JFrame {
     /**
      * Creates new form CursoListar
      */
-    public CursoListar() {
-        initComponents();
-        carregarTabela(); // carrega ao abrir
-    }
+    public CursoListar() { // construtor da tela
+
+    initComponents(); // inicializa os componentes da tela
+
+    cursoController = br.com.ifba.Prg03persistenciaApplication.contexto.getBean(br.com.ifba.curso.controller.CursoController.class); // pega o controller do Spring
+
+    carregarTabela(); // carrega os dados da tabela
+
+} // fim do construtor
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -217,7 +224,7 @@ public class CursoListar extends javax.swing.JFrame {
 
             Long id = Long.parseLong(tblCursos.getValueAt(linha, 0).toString()); // obtém o ID
 
-            new br.com.ifba.curso.controller.CursoController().remover(id);  // remove curso pela controller
+            cursoController.remover(id);  // remove curso pela controller
 
             carregarTabela(); // atualiza a tabela
 
@@ -252,7 +259,7 @@ public class CursoListar extends javax.swing.JFrame {
 
         br.com.ifba.curso.entity.Curso curso = null; // cria variável para armazenar o curso
 
-        for (br.com.ifba.curso.entity.Curso c : new br.com.ifba.curso.controller.CursoController().listar()) { // busca cursos pela controller
+        for (br.com.ifba.curso.entity.Curso c : cursoController.listar()) { // busca cursos pela controller
             if (c.getId().equals(id)) { // verifica se o ID corresponde
                 curso = c; // armazena o curso encontrado
                 break; // sai do loop
@@ -291,27 +298,6 @@ public class CursoListar extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new CursoListar().setVisible(true));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtualizar;

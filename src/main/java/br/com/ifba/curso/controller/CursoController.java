@@ -10,13 +10,20 @@ import br.com.ifba.curso.service.CursoService; // importa a camada de serviço
 
 import java.util.List; // importa lista
 
+import org.springframework.beans.factory.annotation.Autowired; // importa injeção automática
+
+import org.springframework.stereotype.Controller; // importa anotação Controller
+
+
 /**
  *
  * @author Davi
  */
-public class CursoController { // classe controladora de Curso
+@Controller // indica que esta classe é gerenciada pelo Spring como controller
+public class CursoController { // início da classe CursoController
 
-    private CursoService cursoService = new CursoService(); // cria instância da camada de serviço
+    @Autowired // pede para o Spring injetar automaticamente o service
+    private CursoService cursoService; // service usado pelo controller
 
     public void salvar(Curso curso) { // método responsável por salvar ou atualizar curso
 
