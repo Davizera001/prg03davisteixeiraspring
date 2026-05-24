@@ -15,6 +15,4 @@ public class StringUtil {
         return texto == null || texto.trim().isEmpty(); // retorna verdadeiro se for nulo, vazio ou só espaços
 
     } // fim do método
-
-    
 }

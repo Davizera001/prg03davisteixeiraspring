@@ -5,25 +5,24 @@
 package br.com.ifba.curso.controller;
 
 import br.com.ifba.curso.entity.Curso; // importa a entidade Curso
-
 import br.com.ifba.curso.service.CursoService; // importa a camada de serviço
 
 import java.util.List; // importa lista
 
-import org.springframework.beans.factory.annotation.Autowired; // importa injeção automática
-
 import org.springframework.stereotype.Controller; // importa anotação Controller
+
+import lombok.RequiredArgsConstructor;
 
 
 /**
  *
  * @author Davi
  */
+@RequiredArgsConstructor // Lombok gera construtor com atributos final para injeção de dependência
 @Controller // indica que esta classe é gerenciada pelo Spring como controller
 public class CursoController { // início da classe CursoController
 
-    @Autowired // pede para o Spring injetar automaticamente o service
-    private CursoService cursoService; // service usado pelo controller
+    private final CursoService cursoService; // service usado pelo controller
 
     public void salvar(Curso curso) { // método responsável por salvar ou atualizar curso
 
