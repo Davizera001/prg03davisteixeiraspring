@@ -36,7 +36,6 @@ public class CursoService { // início da classe CursoService
     if (curso == null) { // verifica se o objeto curso está nulo
 
         log.error("Falha ao salvar: objeto Curso está nulo"); // registra erro grave
-
         throw new RuntimeException("Curso inválido!"); // lança exceção de validação
 
     } // fim do if
@@ -44,7 +43,6 @@ public class CursoService { // início da classe CursoService
     if (StringUtil.isNullOrEmpty(curso.getNome())) { // verifica se o nome está vazio
 
         log.warn("Falha ao salvar: nome do curso não informado"); // registra aviso de validação
-
         throw new RuntimeException("O nome do curso é obrigatório!"); // lança erro de validação
 
     } // fim do if
@@ -52,7 +50,6 @@ public class CursoService { // início da classe CursoService
     if (StringUtil.isNullOrEmpty(curso.getDescricao())) { // verifica se a descrição está vazia
 
         log.warn("Falha ao salvar: descrição do curso não informada"); // registra aviso de validação
-
         throw new RuntimeException("A descrição do curso é obrigatória!"); // lança erro de validação
 
     } // fim do if
@@ -60,7 +57,6 @@ public class CursoService { // início da classe CursoService
     if (curso.getCargaHoraria() <= 0) { // verifica se a carga horária é inválida
 
         log.warn("Falha ao salvar: carga horária inválida ({})", curso.getCargaHoraria()); // registra aviso com valor inválido
-
         throw new RuntimeException("A carga horária deve ser maior que zero!"); // lança erro de validação
 
     } // fim do if

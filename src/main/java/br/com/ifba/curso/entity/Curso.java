@@ -29,5 +29,4 @@ public class Curso { // início da classe Curso
     private String descricao; // atributo descrição do curso
     private int cargaHoraria; // atributo carga horária
 
-  
 }
